@@ -1,0 +1,46 @@
+{
+    "version": "0.1.0",
+    "command": "cmd",
+    "isShellCommand": true,
+    "showOutput": "silent",
+    "tasks": [
+        {
+            "taskName": "build",
+            "args": [
+                "/C",
+                "go",
+                "build",
+                "-ldflags",
+                "-s -w",
+                "-o",
+                "bin/pupilla.exe",
+                "main.go"
+            ]
+        },
+        {
+            "taskName": "run",
+            "args": [
+                "/C",
+                "go",
+                "run",
+                "main.go"
+            ]
+        },
+        {
+            "taskName": "install",
+            "args": [
+                "/C",
+                "go",
+                "install"
+            ]
+        },
+        {
+            "taskName": "start",
+            "args": [
+                "/C",
+                "start",
+                "bin/pupilla.exe"
+            ]
+        }
+    ]
+}

@@ -1,0 +1,12 @@
+{
+    "start":[
+        "http://localhost:8576/s/",
+        ["","D:/soft/Mozilla Firefox/firefox.exe","http://localhost:8576/s/"],
+        ["","C:/Users/Mocheer/AppData/Roaming/360se6/Application/360se.exe","http://localhost:8576/s/"]
+    ],
+    "port": "8576",
+    "fileServer": {
+        "./": "/s/"
+    },
+    "urlServer": "/u/"
+}
