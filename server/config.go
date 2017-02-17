@@ -29,7 +29,8 @@ func NewWebConfig(filePath string) (*WebConfig, error) {
 //NewDefaultConfig new default web config
 func NewDefaultConfig() *WebConfig {
 	return &WebConfig{
-		Port: "8575",
+		Start: "http://localhost:8575/s/",
+		Port:  "8575",
 		FileServer: map[string]string{
 			"./": "/s",
 		},

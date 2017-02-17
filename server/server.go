@@ -27,7 +27,7 @@ type webserver struct {
 }
 
 func NewWebServer(filePath string) (Server, error) {
-	webConfig, err := NewWebConfig(filePath)
+	var webConfig, err = NewWebConfig(filePath)
 	if err != nil {
 		return nil, err
 	}
@@ -35,14 +35,21 @@ func NewWebServer(filePath string) (Server, error) {
 	return s, nil
 }
 
+func NewDefaultServer(p string) Server {
+	var webConfig = NewDefaultConfig()
+	if p != "" {
+		webConfig.Port = p
+	}
+	return &webserver{webConfig}
+}
+
 func (this *webserver) Start() error {
+	go this.StartCMD()
+	return this.StartListen()
+}
+
+func (this *webserver) StartCMD() {
 	c := this.config
-	if c.FileServer != nil {
-		this.StartFileServer()
-	}
-	if c.URLServer != "" {
-		this.StartURLServer()
-	}
 	if c.Start != nil {
 		switch c.Start.(type) {
 		case string:
@@ -63,7 +70,21 @@ func (this *webserver) Start() error {
 			}
 		}
 	}
-	return this.StartListen()
+}
+
+func (this *webserver) StartListen() error {
+	c := this.config
+	if c.FileServer != nil {
+		this.StartFileServer()
+	}
+	if c.URLServer != "" {
+		this.StartURLServer()
+	}
+	err := http.ListenAndServe(":"+c.Port, nil)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func (this *webserver) StartFileServer() {
@@ -78,15 +99,6 @@ func (this *webserver) StartURLServer() {
 	c := this.config
 	log.Println("UrlServer:", c.URLServer)
 	http.HandleFunc(c.URLServer, urlHandle)
-}
-
-func (this *webserver) StartListen() error {
-	c := this.config
-	err := http.ListenAndServe(":"+c.Port, nil)
-	if err != nil {
-		return err
-	}
-	return nil
 }
 
 func urlHandle(w http.ResponseWriter, r *http.Request) {
